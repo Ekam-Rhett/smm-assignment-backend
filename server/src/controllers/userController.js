@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
+import generateToken from '../utils/jwt/generateToken.js';
 
 
 const registerUser = asyncHandler (async (req, res) => {
@@ -9,7 +10,7 @@ const registerUser = asyncHandler (async (req, res) => {
 
     if (userExists) {
         res.status(400);
-        throw new Error("User already exisits")
+        throw new Error("User already exists")
     }
 
     const newUser = await User.create({
@@ -20,14 +21,14 @@ const registerUser = asyncHandler (async (req, res) => {
 
     if (newUser) {
         return res.status(201).json({
-            user_id: newUser._id,
             name: newUser.name,
             email: newUser.email,
+            token: generateToken(newUser._id),
             message: "Successfully registered"
         })
     } else {
         res.status(400);
-        throw new Error("Error occured while saving to database")
+        throw new Error("Could not save to database")
     }
 });
 
@@ -40,10 +41,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if (user && await user.matchPassword(password)) {
         res.status(201).json({
-            id: user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin
+            token: generateToken(user._id),
+            message: "Successfully authenticated"
         })
     } else {
         res.status(400)
@@ -51,8 +52,6 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
 })
-
-
 
 
 
