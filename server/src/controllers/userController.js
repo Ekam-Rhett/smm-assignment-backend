@@ -51,7 +51,7 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new Error("Invalid email or password")
     }
 
-})
+});
 
 
 const userData = asyncHandler(async (req, res) => {
@@ -60,9 +60,47 @@ const userData = asyncHandler(async (req, res) => {
         email: req.user.email,
         isAdmin: req.user.isAdmin
     })
+});
+
+
+const updateProfie = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        if (req.body.email) {
+            const existingUser = await User.findOne({email: req.body.email});
+            if (!existingUser) {
+                user.email = req.body.email
+            } else {
+                res.status(400)
+                throw new Error('An account already exists with this email')
+            }
+        }
+        if (req.body.name) user.name = req.body.name
+        if (req.body.password) user.password = req.body.password
+
+
+        const updatedUser = await user.save();
+
+        if (updatedUser) {
+            return res.status(201).json({
+                name: updatedUser.name,
+                email: updatedUser.email,
+                token: generateToken(updatedUser._id),
+                message: "Profile updated"
+            }) 
+        } else {
+            res.status(400)
+            throw new Error("Could not save to database")
+        }
+
+    } else {
+        res.status(404)
+        throw new Error("User not found")
+    }
 })
 
 
 
 
-export {registerUser, loginUser, userData};
+export {registerUser, loginUser, userData, updateProfie};

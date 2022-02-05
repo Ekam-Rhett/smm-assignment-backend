@@ -1,6 +1,4 @@
-import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js'
-import asyncHandler from 'express-async-handler'
 import passport from 'passport'
 import passportJwt from 'passport-jwt'
 
