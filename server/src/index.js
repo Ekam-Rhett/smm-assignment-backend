@@ -18,10 +18,10 @@ app.get('/', (req, res) => {
     })
 })
 
-app.use('/api/auth', userRoutes);
+app.use('/', userRoutes);
 
-// app.use(notFound);
-// app.use(errorHandler);
+app.use(notFound);
+app.use(errorHandler);
 
 
 
