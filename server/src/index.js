@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
     })
 })
 
-app.use('/api/auth', userRoutes);
+app.use('/api/admin', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

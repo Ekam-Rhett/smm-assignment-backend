@@ -54,6 +54,15 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 
+const userData = asyncHandler(async (req, res) => {
+    return res.status(200).json({
+        name: req.user.name,
+        email: req.user.email,
+        isAdmin: req.user.isAdmin
+    })
+})
 
 
-export {registerUser, loginUser};
+
+
+export {registerUser, loginUser, userData};

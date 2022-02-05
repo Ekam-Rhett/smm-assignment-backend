@@ -21,7 +21,7 @@ const protect = passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
         } else {
             return done(null, false);
         }
-    }).select("-password").select("-createdAt").select("-updatedAt").select("-__v");
+    }).select("-password");
 }));
 
 export default protect;
