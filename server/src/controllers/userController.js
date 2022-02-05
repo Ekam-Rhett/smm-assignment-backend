@@ -9,21 +9,33 @@ const registerUser = async (req, res) => {
         const userExists = await User.findOne({email})
 
         if (userExists) {
-            return res.status(400).json({
-                error: "User already exisits"
-            })
+            res.status(400);
+            throw new Error("User already exisits")
         }
 
-
-        return res.status(200).json({
+        const newUser = await User.create({
             name,
-            email
+            email,
+            password
         })
+
+        if (newUser) {
+            return res.status(201).json({
+               user_id: newUser._id,
+               name: newUser.name,
+               email: newUser.email,
+               message: "Successfully registered"
+            })
+        } else {
+            res.status(400);
+            throw new Error("Error occured while saving to database")
+        }
+
     } catch (err) {
         console.error(err);
         return res.status(500).json({
             "error": "Something went wrong!",
-            "errorInfo": `${err}`
+            "errorInfo": `${err.message}`
         })
     }
 };
