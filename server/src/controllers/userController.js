@@ -10,14 +10,14 @@ const registerUser = asyncHandler (async (req, res) => {
 
     if (userExists) {
         res.status(400);
-        throw new Error("User already exists")
+        throw new Error("User already exists");
     }
 
     const newUser = await User.create({
         name,
         email,
         password
-    })
+    });
 
     if (newUser) {
         return res.status(201).json({
@@ -25,10 +25,10 @@ const registerUser = asyncHandler (async (req, res) => {
             email: newUser.email,
             token: generateToken(newUser._id),
             message: "Successfully registered"
-        })
+        });
     } else {
         res.status(400);
-        throw new Error("Could not save to database")
+        throw new Error("Could not save to database");
     }
 });
 
@@ -45,10 +45,10 @@ const loginUser = asyncHandler(async (req, res) => {
             email: user.email,
             token: generateToken(user._id),
             message: "Successfully authenticated"
-        })
+        });
     } else {
-        res.status(400)
-        throw new Error("Invalid email or password")
+        res.status(400);
+        throw new Error("Invalid email or password");
     }
 
 });
@@ -59,7 +59,7 @@ const userData = asyncHandler(async (req, res) => {
         name: req.user.name,
         email: req.user.email,
         isAdmin: req.user.isAdmin
-    })
+    });
 });
 
 
@@ -67,18 +67,23 @@ const updateProfie = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-        if (req.body.email) {
-            const existingUser = await User.findOne({email: req.body.email});
-            if (!existingUser) {
-                user.email = req.body.email
-            } else {
-                res.status(400)
-                throw new Error('An account already exists with this email')
-            }
-        }
+        // if (req.body.email) {
+        //     const existingUser = await User.findOne({email: req.body.email});
+        //     console.log(existingUser._id)
+        //     console.log(user._id);
+        //     if (!existingUser || existingUser._id == user._id) {
+        //         user.email = req.body.email
+        //         console.log(5)
+        //     } else {
+        //         console.log(6)
+        //         res.status(400);
+        //         throw new Error('An account already exists with this email');
+        //     }
+        // }
+
+        if (req.body.email) user.email = req.body.email
         if (req.body.name) user.name = req.body.name
         if (req.body.password) user.password = req.body.password
-
 
         const updatedUser = await user.save();
 
