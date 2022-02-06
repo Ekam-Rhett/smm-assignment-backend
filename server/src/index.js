@@ -3,6 +3,7 @@ import 'dotenv/config'
 
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoute.js'
+import categoryRoutes from './routes/categoryRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 
 const app = express();
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/admin', userRoutes);
+app.use('/api/category', categoryRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
