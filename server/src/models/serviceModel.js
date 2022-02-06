@@ -1,13 +1,17 @@
-import mongoose, { isValidObjectId } from 'mongoose'
+import mongoose from 'mongoose'
 
 
 const serviceSchema = mongoose.Schema({
     categoryId: {
-        type: isValidObjectId,
+        type: Object,
         required: true
     },
     name: {
         type: String,
+        required: true
+    },
+    supplierServiceId: {
+        type: Number,
         required: true
     },
     serviceType: {
@@ -31,6 +35,9 @@ const serviceSchema = mongoose.Schema({
         required: true,
         default: true
     }
+},
+{
+    timestamps: true
 })
 
 const Service = mongoose.model("Services", serviceSchema);
