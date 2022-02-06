@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Category from '../models/categoryModel.js';
+import Service from '../models/serviceModel.js';
 
 
 const getCategories = asyncHandler(async (req, res) => {
@@ -102,6 +103,12 @@ const updateCategory = asyncHandler(async (req, res) => {
         throw new Error('No categoryId provided');
     }
 });
+
+
+
+
+
+
 
 
 export {getCategories, createCategory, deleteCategory,  updateCategory};

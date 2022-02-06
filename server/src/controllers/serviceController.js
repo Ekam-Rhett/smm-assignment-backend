@@ -4,11 +4,11 @@ import Service from '../models/serviceModel.js';
 
 
 
-const getServices = asyncHandler(async (req, res) => {
+const adminServices = asyncHandler(async (req, res) => {
     let allServices;
     const showDisabled = (req.params.showDisabled === "true") ? true : false;
 
-    if (showDisabled) {
+    if (showDisabled || !showDisabled) {
         allServices = await Service.find();
     } else {
         allServices = await Service.find({isActive: true});
@@ -24,6 +24,31 @@ const getServices = asyncHandler(async (req, res) => {
         throw new Error("Could not fetch services");
     }
 });
+
+
+
+const publicServices = asyncHandler(async (req, res) => {
+    const categories = await Category.find();
+    const services = await Service.find();
+    
+    let sendServices = []
+    services.forEach(service => {
+        let category = categories.filter(c => c._id.valueOf() === service.categoryId)
+        let data = {
+            "id": service._id,
+            "name": service.name,
+            "type": service.serviceType,
+            "rate": service.retailPrice,
+            "quantity": service.quantity,
+            "refill": true,
+            "category": category[0].name
+        }
+       sendServices.push(data) 
+    })
+
+    return res.status(200).send(sendServices);
+
+})
 
 
 
@@ -84,10 +109,14 @@ const updateService = asyncHandler(async (req, res) => {
     const {serviceId, categoryId, supplierServiceId, name, serviceType, retailPrice, quantity, quality, denyLinkDuplicates, isActive} = req.body;
     const service = await Service.findById(serviceId);
 
-    
     if (!serviceId) {
         res.status(400);
         throw new Error('No serviceId provided');
+    }
+
+    if (!service) {
+        res.status(400);
+        throw new Error('Service not found');
     }
 
     if (categoryId) {
@@ -96,15 +125,8 @@ const updateService = asyncHandler(async (req, res) => {
             res.status(201);
             throw new Error('Not valiad categoryId provided');
         }
-
-
-        if (!service) {
-            res.status(400);
-            throw new Error('Service not found')
-        }
     }
     
-
     if (categoryId) service.categoryId = categoryId;
     if (isActive) service.isActive = isActive;
     if (supplierServiceId) service.supplierServiceId = supplierServiceId;
@@ -114,22 +136,21 @@ const updateService = asyncHandler(async (req, res) => {
     if (quantity) service.quantity = quantity;
     if (quality) service.quality = quality;
     if (denyLinkDuplicates) service.denyLinkDuplicates = denyLinkDuplicates;
-    
 
     const updatedService = await service.save();
 
     if  (!updatedService) {
         res.status(400);
-        throw new Error("Could not update to database")
+        throw new Error("Could not update to database");
     }
 
     return res.status(201).json({
         updatedService,
         message: "Service updated"
-    })
+    });
     
 });
 
 
 
-export  {getServices, createService, updateService,  deleteService};
+export  {publicServices, adminServices, createService, updateService,  deleteService};
