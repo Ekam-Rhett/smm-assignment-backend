@@ -1,16 +1,15 @@
-import express from 'express';
 import 'dotenv/config'
-
+import express from 'express';
+const nodemailer = require("nodemailer");
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoute.js'
+import ticketRoutes from './routes/tickets.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 
 const app = express();
 connectDB();
 const port = process.env.PORT || 5000;
 app.use(express.json());
-
-
 
 app.get('/', (req, res) => {
     res.status(200).json({
@@ -20,10 +19,12 @@ app.get('/', (req, res) => {
 
 app.use('/api/admin', userRoutes);
 
+
+// ticket route api?
+app.use('/api/ticket', ticketRoutes);
+
 app.use(notFound);
 app.use(errorHandler);
-
-
 
 app.listen(port, () => {
     console.log(`Server successfully running on port ${port}`)
