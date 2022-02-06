@@ -3,22 +3,15 @@ import Category from '../models/categoryModel.js';
 
 
 const getCategories = asyncHandler(async (req, res) => {
-
-    const showAll = req.params.showAll;
-    console.log(showAll)
     let allCategories;
-    if (showAll === "true") {
-        console.log(1)
+    const showAll = (req.params.showAll === "true") ? true : false;
+    
+    if (showAll) {
         allCategories = await Category.find();
     } else {
-        console.log(2)
         allCategories = await Category.find({isDisabled: false});
     }
     
-    
-
-
-
     if (allCategories) {
         return res.status(201).json({
             showAll,
