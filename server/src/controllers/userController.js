@@ -96,7 +96,7 @@ const updateProfie = asyncHandler(async (req, res) => {
             }) 
         } else {
             res.status(400)
-            throw new Error("Could not save to database")
+            throw new Error("Could not save to database") 
         }
 
     } else {
