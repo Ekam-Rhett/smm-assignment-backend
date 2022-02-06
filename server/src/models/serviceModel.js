@@ -34,6 +34,11 @@ const serviceSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+        required: true
     }
 },
 {
