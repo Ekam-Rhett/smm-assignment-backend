@@ -44,6 +44,32 @@ const createCategory = asyncHandler(async (req, res) => {
 
 });
 
+const deleteCategory = asyncHandler(async (req, res) => {
+    const { categoryId } = req.body;
+
+    if (categoryId) {
+        
+        const deletedCategory = await Category.deleteOne({"_id": categoryId})
+
+        if (deletedCategory.deletedCount === 1) {
+            res.status(201).json({
+                categoryId,
+                message: "Successfully deleted"
+            })
+        } else {
+            res.status(400)
+            throw new Error("Could not find or delete category")
+        }
+
+    } else {
+        res.status(400);
+        throw new Error("Category Id not provided")
+    }   
 
 
-export {getCategories, createCategory};
+
+})
+
+
+
+export {getCategories, createCategory, deleteCategory};
