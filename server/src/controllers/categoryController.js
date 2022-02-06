@@ -66,10 +66,42 @@ const deleteCategory = asyncHandler(async (req, res) => {
         throw new Error("Category Id not provided")
     }   
 
-
-
 })
 
 
+const updateCategory = asyncHandler(async (req, res) => {
+    if (req.body.categoryId) {
+        const category = await Category.findById(req.body.categoryId);
+        
+        if (category) {
+            if (req.body.name) category.name = req.body.name;
+            if (req.body.isDisabled) category.isDisabled = req.body.isDisabled;
 
-export {getCategories, createCategory, deleteCategory};
+            const updatedCategory = await category.save();
+
+            if (updatedCategory) {
+                res.status(201).json({
+                    id: updatedCategory._id,
+                    name: updatedCategory.name,
+                    isDisabled: updatedCategory.isDisabled,
+                    message: "Category updated"
+                });
+            } else {
+                res.status(400);
+                throw new Error("Could not save to database") ;
+            }
+
+        } else {
+            res.status(404);
+            throw new Error("Category not found");
+        }
+
+
+    } else {
+        res.status(400);
+        throw new Error('No categoryId provided');
+    }
+});
+
+
+export {getCategories, createCategory, deleteCategory,  updateCategory};
