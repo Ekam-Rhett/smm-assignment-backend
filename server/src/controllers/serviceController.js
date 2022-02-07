@@ -35,7 +35,7 @@ const publicServices = asyncHandler(async (req, res) => {
     services.forEach(service => {
         let category = categories.filter(c => c._id.valueOf() === service.categoryId)
         let data = {
-            "id": service._id,
+            "serviceId": service._id,
             "name": service.name,
             "type": service.serviceType,
             "rate": service.retailPrice,
