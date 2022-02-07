@@ -64,6 +64,7 @@ const userData = asyncHandler(async (req, res) => {
 
 
 const updateProfie = asyncHandler(async (req, res) => {
+
     const user = await User.findById(req.user._id);
 
     if (user) {
