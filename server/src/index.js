@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/userRoute.js'
 import categoryRoutes from './routes/categoryRoute.js'
 import serviceRoutes from './routes/serviceRoute.js'
+import paymentRoutes from './routes/paymentRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 
 const app = express();
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/api/admin', userRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/service', serviceRoutes);
+app.use('/api/payment', paymentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

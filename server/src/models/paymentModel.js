@@ -17,7 +17,7 @@ const paymentSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    customerMail: {
+    customerEmail: {
         type: String,
         required: true
     },
@@ -36,7 +36,9 @@ const paymentSchema = mongoose.Schema({
     }
 }, {
     timestamps: true
-})
+});
 
 
-export const Payment =  mongoose.model('Payment', paymentSchema);
+const Payment =  mongoose.model('Payment', paymentSchema);
+
+export default Payment;
