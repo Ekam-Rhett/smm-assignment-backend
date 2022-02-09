@@ -5,7 +5,9 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/userRoute.js'
 import categoryRoutes from './routes/categoryRoute.js'
 import serviceRoutes from './routes/serviceRoute.js'
+import paymentRoutes from './routes/paymentRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
+import sendOrderProvider from './helpers/provider.js'
 
 const app = express();
 connectDB();
@@ -23,6 +25,7 @@ app.get('/', (req, res) => {
 app.use('/api/admin', userRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/service', serviceRoutes);
+app.use('/api/payment', paymentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
@@ -32,3 +35,5 @@ app.use(errorHandler);
 app.listen(port, () => {
     console.log(`Server successfully running on port ${port}`)
 })
+
+sendOrderProvider();

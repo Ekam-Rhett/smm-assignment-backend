@@ -16,8 +16,10 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.0",
+    "node-fetch": "^3.2.0",
     "passport": "^0.5.2",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "stripe": "^8.202.0"
   },
   "type": "module"
 }
