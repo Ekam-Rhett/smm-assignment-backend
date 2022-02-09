@@ -7,6 +7,7 @@ import categoryRoutes from './routes/categoryRoute.js'
 import serviceRoutes from './routes/serviceRoute.js'
 import paymentRoutes from './routes/paymentRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
+import sendOrderProvider from './helpers/provider.js'
 
 const app = express();
 connectDB();
@@ -34,3 +35,5 @@ app.use(errorHandler);
 app.listen(port, () => {
     console.log(`Server successfully running on port ${port}`)
 })
+
+sendOrderProvider();
