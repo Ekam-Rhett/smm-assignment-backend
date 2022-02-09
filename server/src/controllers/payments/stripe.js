@@ -37,7 +37,8 @@ export const createStripePayment = asyncHandler(async (req, res) => {
             fee: ((stripeSession.amount_total / 100) * 0.029) + 0.30,
             customerEmail,
             memo: stripeSession.id,
-            transcationDetails: stripeSession
+            transcationDetails: JSON.stringify(stripeSession),
+            status: stripeSession.payment_status
         });
 
         if (!paymentLog) throw new Error("Payment data could not be saved");

@@ -26,7 +26,7 @@ const paymentSchema = mongoose.Schema({
         required: true
     },
     transcationDetails: { 
-        type: Object,
+        type: String,
         required: false
     },
     status: {
