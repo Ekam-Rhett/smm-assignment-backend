@@ -65,19 +65,19 @@ export const successStripePayment = async(req, res) => {
     const session = await stripe.checkout.sessions.retrieve(stripeToken);
     if (!session) throw new Error("Invaliad Stripe session")
 
-    if (session.payment)
-    const paymentLog = await Payment.create({
-      orderId: Math.floor(Math.random() * 1000000000),
-      paymentMethod: "stripe",
-      amountPaid: session.amount_total / 100,
-      fee: ((session.amount_total / 100) * 0.029) + 0.30,
-      customerEmail: null,
-      memo: null,
-      transcationDetails: null,
-      status: "compeleted"
-    });
+    // if (session.payment)
+    // const paymentLog = await Payment.create({
+    //   orderId: Math.floor(Math.random() * 1000000000),
+    //   paymentMethod: "stripe",
+    //   amountPaid: session.amount_total / 100,
+    //   fee: ((session.amount_total / 100) * 0.029) + 0.30,
+    //   customerEmail: null,
+    //   memo: null,
+    //   transcationDetails: null,
+    //   status: "compeleted"
+    // });
 
-    if (!paymentLog) throw new Error("Payment data could not be saved");
+    // if (!paymentLog) throw new Error("Payment data could not be saved");
     // console.log(event)
 
       res.status(200).json({
