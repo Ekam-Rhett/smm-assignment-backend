@@ -42,7 +42,12 @@ const orderSchema = mongoose.Schema({
     }
 }, {
     timestamps: true
-})
+});
+
+
+orderSchema.pre('save', async function() {
+    this._id = await userSchema.count;
+});
 
 
 const Order = mongoose.model("Orders", orderSchema);
