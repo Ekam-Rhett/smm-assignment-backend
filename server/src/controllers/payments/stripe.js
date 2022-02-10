@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import Stripe from 'stripe';
 import Service from '../../models/serviceModel.js'
 import Payment from '../../models/paymentModel.js'
+
 import { response } from 'express';
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY)
 
@@ -26,28 +27,17 @@ export const createStripePayment = asyncHandler(async (req, res) => {
                 }
             ],
             metadata: {
+                link, 
                 serviceId,
-                link,
                 customerEmail
             },
             customer_email: customerEmail,
-            success_url: `${process.env.CLIENT_URL}/success`,
+            success_url: `${process.env.CLIENT_URL}/api/payment/stripe/success/{CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.CLIENT_URL}/cancel`
         });
 
 
-        const paymentLog = await Payment.create({
-            orderId: "NA",
-            paymentMethod: "stripe",
-            amountPaid: stripeSession.amount_total / 100,
-            fee: ((stripeSession.amount_total / 100) * 0.029) + 0.30,
-            customerEmail,
-            memo: stripeSession.id,
-            transcationDetails: stripeSession,
-            status: stripeSession.payment_status
-        });
-
-        if (!paymentLog) throw new Error("Payment data could not be saved");
+        
 
         res.status(200).json({
             url: stripeSession.url
@@ -56,16 +46,66 @@ export const createStripePayment = asyncHandler(async (req, res) => {
 });
 
 
-export const verifyStripePayment = async (req, res) => {
-    const endpointSecret = "whsec_eacff9d58922bd1f610eda69b9c861e5c187287f1fccda210fbe7ac9b81d8b27";
-    const sig = request.headers['stripe-signature'];
-    let event;
 
-    try {
-        event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-    } catch (err) {
-        throw new Error(err.message)
-    }
 
-    response.send()
+export const verifyStripePayment = async(req, res) => {
+    let charge;
+    const event = req.body
+
+
+    
+    response.status(200).json({received: true});
+
 }
+
+
+export const successStripePayment = async(req, res) => {
+    const stripeToken = req.params.sessionId
+    if (!stripeToken) throw new Error("Stripe token not provided")
+    const session = await stripe.checkout.sessions.retrieve(stripeToken);
+    if (!session) throw new Error("Invaliad Stripe session")
+
+    if (session.payment)
+    const paymentLog = await Payment.create({
+      orderId: Math.floor(Math.random() * 1000000000),
+      paymentMethod: "stripe",
+      amountPaid: session.amount_total / 100,
+      fee: ((session.amount_total / 100) * 0.029) + 0.30,
+      customerEmail: null,
+      memo: null,
+      transcationDetails: null,
+      status: "compeleted"
+    });
+
+    if (!paymentLog) throw new Error("Payment data could not be saved");
+    // console.log(event)
+
+      res.status(200).json({
+        session
+      })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

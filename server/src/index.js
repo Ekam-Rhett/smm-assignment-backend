@@ -10,9 +10,9 @@ import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 
 const app = express();
 connectDB();
+
 const port = process.env.PORT || 5000;
 app.use(express.json());
-
 
 
 app.get('/', (req, res) => {
@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
         message: "Successfully running"
     })
 })
+
+
 
 app.use('/api/admin', userRoutes);
 app.use('/api/category', categoryRoutes);
