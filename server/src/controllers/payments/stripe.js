@@ -6,7 +6,7 @@ const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY)
 
 export const createStripePayment = asyncHandler(async (req, res) => {
 
-        const {serviceId, customerEmail} = req.body
+        const {link, serviceId, customerEmail} = req.body
 
         if (!serviceId) throw new Error('serviceId is required');
         const lineItem = await Service.findOne({_id: serviceId});
@@ -22,6 +22,11 @@ export const createStripePayment = asyncHandler(async (req, res) => {
                     currency: 'usd',
                     amount: lineItem.retailPrice * 100,
 
+                }
+            ],
+            checkout_data: [
+                {
+                    link
                 }
             ],
             customer_email: customerEmail,
