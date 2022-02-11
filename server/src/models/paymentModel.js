@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 
 const paymentSchema = mongoose.Schema({
-    orderId: {
-        type: String,
-        required: true
-    },
     paymentMethod: {
         type: String,
         required: true

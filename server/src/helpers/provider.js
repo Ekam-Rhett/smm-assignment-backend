@@ -6,14 +6,14 @@ const providerKey = process.env.PROVIDER_APIKEY
 
 
 
-export async function sendOrderProvider() {
+export async function sendOrderProvider(orderData) {
     try {
         const params = {
             key: providerKey,
             action: "add",
-            service: "374",
-            link: "123.com",
-            quantity: "100"
+            service: orderData.service,
+            link: orderData.link,
+            quantity: orderData.quantity
         }
 
         const options = {
@@ -26,7 +26,15 @@ export async function sendOrderProvider() {
     
         const placeOrder = await fetch(providerEndpoint, options);
         const response = await placeOrder.json();
-        console.log(response);
+        let orderStatus = await checkStatus(response.order)
+        let finalResponse = {
+            order: response.order,
+            charge: orderStatus.charge,
+            startCount: orderStatus.start_count,
+            orderStatus: orderStatus.status,
+            orderRemains: orderStatus.remains
+        }
+        return finalResponse;
     } catch (err) {
         console.error(err);
     }
@@ -34,12 +42,12 @@ export async function sendOrderProvider() {
 }
 
 
-export async function checkStatus() {
+export async function checkStatus(exteneralId) {
     try {
         const params = {
             key: providerKey,
             action: "status",
-            order: "34804"
+            order: exteneralId
         }
 
         const options = {
@@ -52,7 +60,7 @@ export async function checkStatus() {
 
         const checkStatus = await fetch(providerEndpoint, options);
         const response = await checkStatus.json();
-        console.log(response);
+        return response;
     } catch (err) {
         console.error(err);
     }

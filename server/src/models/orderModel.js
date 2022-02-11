@@ -10,7 +10,7 @@ const orderSchema = mongoose.Schema({
         required: true
     },
     serviceId: {
-        type: Number,
+        type: String,
         required: true
     },
     link: {
@@ -23,13 +23,13 @@ const orderSchema = mongoose.Schema({
     },
     startCount: {
         type: Number,
-        required: true,
-        defualt: null
+        required: false,
+        defualt: "null"
     },
     remains: {
         type: Number,
         required: true,
-        defualt: null
+        defualt: "null"
     },
     status: {
         type: String,
@@ -45,9 +45,6 @@ const orderSchema = mongoose.Schema({
 });
 
 
-orderSchema.pre('save', async function() {
-    this._id = await userSchema.count;
-});
 
 
 const Order = mongoose.model("Orders", orderSchema);

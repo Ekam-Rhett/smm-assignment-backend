@@ -2,6 +2,8 @@ import asyncHandler from 'express-async-handler'
 import Stripe from 'stripe';
 import Service from '../../models/serviceModel.js'
 import Payment from '../../models/paymentModel.js'
+import { sendOrderProvider } from '../../helpers/provider.js'
+import {createOrder} from '../orderController.js'
 
 import { response } from 'express';
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY)
@@ -46,10 +48,19 @@ export const successStripePayment = asyncHandler(async(req, res) => {
         const stripeToken = req.params.sessionId
         if (!stripeToken) throw new Error("Stripe token not provided")
         const session = await stripe.checkout.sessions.retrieve(stripeToken);
+        const service = await Service.findById(session.metadata.serviceId)
 
         if (session.payment_status === "paid") {
+
+            let orderData = {
+                service: service.supplierServiceId,
+                link: session.metadata.link,
+                quantity: service.quantity
+            }
+
+            let providerOrder = await sendOrderProvider(orderData);
+            
             const paymentLog = await Payment.create({
-                orderId: Math.floor(Math.random() * 1000000000),
                 paymentMethod: "stripe",
                 amountPaid: session.amount_total / 100,
                 fee: ((session.amount_total / 100) * 0.029) + 0.30,
@@ -61,9 +72,31 @@ export const successStripePayment = asyncHandler(async(req, res) => {
         
             if (!paymentLog) throw new Error("Payment data could not be saved");
 
+            orderData = {
+                apiOrderId: providerOrder.order,
+                serviceId: session.metadata.serviceId,
+                link: session.metadata.link,
+                cost: providerOrder.charge,
+                startCount: providerOrder.startCount,
+                remains: providerOrder.orderRemains,
+                status: providerOrder.orderStatus,
+                paymentId: paymentLog._id
+            }
+            
+            const orderLog = await createOrder(orderData);
+
+            if (!orderLog) throw new Error("Order data could not be saved")
+
+            console.log(orderLog);
             res.status(200).json({
-                session
-            })
+                order: orderLog.newOrder.orderId,
+                service: service.name,
+                email: paymentLog.customerEmail,
+                link: orderData.link,
+                startCount: orderData.startCount,
+                remains: orderData.remains,
+                status: orderData.status
+            });
         } else if (session.payment_status === "unpaid") {
             res.status(401).json({
                 message: "Invalid payment"
@@ -77,4 +110,4 @@ export const successStripePayment = asyncHandler(async(req, res) => {
   
       
 })
-
+ 

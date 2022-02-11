@@ -54,7 +54,6 @@ const publicServices = asyncHandler(async (req, res) => {
 
 const createService = asyncHandler(async (req, res) => {
     const {categoryId, supplierServiceId, name, serviceType, retailPrice, quantity, quality, denyLinkDuplicates} = req.body;
-
     const category = await Category.findById(categoryId);
 
     if (category) {
