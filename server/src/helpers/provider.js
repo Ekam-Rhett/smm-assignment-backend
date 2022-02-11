@@ -62,8 +62,17 @@ export async function checkStatus(exteneralId) {
         const response = await checkStatus.json();
         return response;
     } catch (err) {
-        console.error(err);
+        console.error(err.message);
     }
 }
 
 
+export async function getServices() {
+    try {
+        const request = await fetch(`${providerEndpoint}?key=${providerKey}&action=services`);
+        const services = await request.json();
+        return services;
+    } catch (err) {
+        console.error(err.message)
+    }
+}
