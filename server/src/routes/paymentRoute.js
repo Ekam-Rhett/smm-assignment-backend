@@ -1,5 +1,5 @@
 import express from 'express';
-import { createStripePayment, verifyStripePayment, successStripePayment } from '../controllers/payments/stripe.js';
+import { createStripePayment, successStripePayment } from '../controllers/payments/stripe.js';
 const router = express.Router();
 
 
@@ -8,7 +8,6 @@ const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY)
 
 
 router.post('/stripe/create', createStripePayment);
-router.post('/stripe/verify', verifyStripePayment);
-router.post('/stripe/success/:sessionId', successStripePayment);
+router.get('/stripe/success/:sessionId', successStripePayment);
 
 export default router;
