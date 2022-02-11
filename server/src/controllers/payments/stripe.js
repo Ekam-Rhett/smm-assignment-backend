@@ -4,8 +4,6 @@ import Service from '../../models/serviceModel.js'
 import Payment from '../../models/paymentModel.js'
 import { sendOrderProvider } from '../../helpers/provider.js'
 import {createOrder} from '../orderController.js'
-
-import { response } from 'express';
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY)
 
 export const createStripePayment = asyncHandler(async (req, res) => {
