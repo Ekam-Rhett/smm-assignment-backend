@@ -51,6 +51,11 @@ export const successStripePayment = asyncHandler(async(req, res) => {
         const service = await Service.findById(session.metadata.serviceId)
 
         if (session.payment_status === "paid") {
+            
+            const payment = await Payment.findOne({memo: session.id})
+            if (payment) {
+                return res.status(401).json({"message": "This order already exists"})
+            }
 
             let orderData = {
                 service: service.supplierServiceId,
@@ -87,7 +92,6 @@ export const successStripePayment = asyncHandler(async(req, res) => {
 
             if (!orderLog) throw new Error("Order data could not be saved")
 
-            console.log(orderLog);
             res.status(200).json({
                 order: orderLog.newOrder.orderId,
                 service: service.name,
