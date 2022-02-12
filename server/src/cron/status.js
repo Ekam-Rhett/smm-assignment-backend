@@ -7,7 +7,6 @@ import Service from '../models/serviceModel.js'
 export const checkBulkStatus = new CronJob('*/20 * * * * *', async function() {
     console.log("Running Cron Task: Checking Order Status'")
     const orders = await Order.find({ $and: [{status: {$ne: "Completed"}}, {status: {$ne: "Canceled"}}, {status: {$ne: "Refunded"}}]});
-    console.log(orders)
     for (const order of orders) {
         const status = await checkStatus(order.apiOrderId);
         const findOrder = await Order.findOne({apiOrderId: order.apiOrderId})
@@ -26,7 +25,7 @@ export const updatingServiceActive = new CronJob('*/30 * * * *', async function(
     const providerServieces = await getServices();
     for (let i = 0; i < services.length; i++) {
         let data = providerServieces.filter(data => data.service == services[i].supplierServiceId);
-        if (data && services[i].isActive == false) {
+        if (data == 1 && services[i].isActive == false) {
             const queryService = await Service.findOne({supplierServiceId: services[i].supplierServiceId});
             queryService.isActive = true;
             await queryService.save();
