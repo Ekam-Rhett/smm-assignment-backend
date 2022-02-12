@@ -6,8 +6,8 @@ const router = express.Router();
 
 
 
-router.route('/register').post(registerUser);
-router.route('/login').post(loginUser);
+router.route('/signup').post(registerUser);
+router.route('/login1').post(loginUser);
 router.route('/profile').get(passport.authenticate('jwt', {session: false}), userData);
 router.route('/updateprofile').post(passport.authenticate('jwt', {session: false}), updateProfie);
 

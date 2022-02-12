@@ -1,6 +1,6 @@
 import express from 'express';
 import 'dotenv/config'
-
+import cors from 'cors'
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoute.js'
 import categoryRoutes from './routes/categoryRoute.js'
@@ -14,6 +14,9 @@ connectDB();
 const port = process.env.PORT || 5000;
 app.use(express.json());
 
+app.use(cors({
+    origin: '*'
+}));
 
 app.get('/', (req, res) => {
     res.status(200).json({
