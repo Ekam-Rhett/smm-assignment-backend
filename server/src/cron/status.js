@@ -4,7 +4,7 @@ import {checkStatus, getServices} from '../helpers/provider.js'
 import Order from '../models/orderModel.js'
 import Service from '../models/serviceModel.js'
 
-export const checkBulkStatus = new CronJob('*/20 * * * * *', async function() {
+export const checkBulkStatus = new CronJob('*/20 * * * *', async function() {
     console.log("Running Cron Task: Checking Order Status'")
     const orders = await Order.find({ $and: [{status: {$ne: "Completed"}}, {status: {$ne: "Canceled"}}, {status: {$ne: "Refunded"}}]});
     for (const order of orders) {

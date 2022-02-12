@@ -4,8 +4,6 @@ const providerEndpoint = `https://${process.env.PROVIDER_ENDPOINT}/api/v2`
 const providerKey = process.env.PROVIDER_APIKEY
 
 
-console.log(providerEndpoint);
-
 export async function sendOrderProvider(orderData) {
     try {
         const params = {

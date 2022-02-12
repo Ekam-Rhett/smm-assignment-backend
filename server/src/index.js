@@ -6,6 +6,7 @@ import userRoutes from './routes/userRoute.js'
 import categoryRoutes from './routes/categoryRoute.js'
 import serviceRoutes from './routes/serviceRoute.js'
 import paymentRoutes from './routes/paymentRoute.js'
+import orderRoutes from './routes/orderRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 import {checkBulkStatus} from './cron/status.js'
 
@@ -31,6 +32,8 @@ app.use('/api/admin', userRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/service', serviceRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/calculate', paymentRoutes);
+app.use('/api/order', orderRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

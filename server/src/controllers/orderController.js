@@ -24,3 +24,18 @@ export const createOrder = asyncHandler(async (orderData) => {
     }
 
 });
+
+
+
+export const getOrders = asyncHandler(async (req, res) => {
+    const allOrders = await Order.find().select('-_id');
+
+    if (!allOrders) {
+        res.status(401);
+        throw new Error("Orders could not be fetched");
+    }
+
+    res.status(200).json({
+        orders: allOrders
+    })
+})
