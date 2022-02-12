@@ -11,3 +11,11 @@ router.route('/delete').post(passport.authenticate('jwt', {session: false}), del
 router.route('/update').post(passport.authenticate('jwt', {session: false}), updateCategory);
 
 export default router;
+
+
+
+
+
+
+
+

@@ -19,14 +19,25 @@ export const checkBulkStatus = new CronJob('*/20 * * * *', async function() {
 }, null, true, process.env.TIME_ZONE);
 
 
-export const updatingServiceActive = new CronJob('*/15 * * * * *', async function() {
+export const updatingServiceActive = new CronJob('*/10 * * * * *', async function() {
     console.log("Running Cron Task: Disabling Inactive Services & Enabling active ones");
     const services = await Service.find();
     const providerServieces = await getServices();
-    console.log(services);
+    for (let i = 0; i < services.length; i++) {
+        let data = providerServieces.filter(data => data.service == services[i].supplierServiceId);
+        if (data && services[i].isActive == false) {
+            const queryService = await Service.findOne({supplierServiceId: services[i].supplierServiceId});
+            queryService.isActive = true;
+            await queryService.save();
+        } else if (data.length == 0 && services[i].isActive == true) {
+            const queryService = await Service.findOne({supplierServiceId: services[i].supplierServiceId});
+            queryService.isActive = false;
+            await queryService.save();
+        }
+    }
 })
 
-
+checkBulkStatus.start();
 updatingServiceActive.start()
 
 
