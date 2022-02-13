@@ -1,6 +1,9 @@
+// Importing packages and files
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 
+
+// function for creating an order (not avaliable via routes - internal method)
 export const createOrder = asyncHandler(async (orderData) => {
     const amountOfOrders = await Order.countDocuments()
 
@@ -17,14 +20,13 @@ export const createOrder = asyncHandler(async (orderData) => {
     });
 
     if (!newOrder) throw new Error("Order data could not be saved")
-
     return {
         newOrder
     }
 });
 
 
-
+// Order controller for getting all orders stored in db
 export const getOrders = asyncHandler(async (req, res) => {
     const allOrders = await Order.find().select('-_id');
 

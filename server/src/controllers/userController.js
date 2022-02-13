@@ -1,8 +1,10 @@
+// Importing packages and files
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/jwt/generateToken.js';
 
 
+// Function for registering users
 const registerUser = asyncHandler (async (req, res) => {
     const {name, email, password} = req.body;
 
@@ -33,7 +35,7 @@ const registerUser = asyncHandler (async (req, res) => {
 });
 
 
-
+// Functiont to log users in
 const loginUser = asyncHandler(async (req, res) => {
     const {email, password} = req.body;
     
@@ -54,6 +56,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 
+// function to get profile information about the user that is logged in
 const userData = asyncHandler(async (req, res) => {
     return res.status(200).json({
         name: req.user.name,
@@ -63,25 +66,12 @@ const userData = asyncHandler(async (req, res) => {
 });
 
 
+// Services controller function for updating user profile
 const updateProfie = asyncHandler(async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
     if (user) {
-        // if (req.body.email) {
-        //     const existingUser = await User.findOne({email: req.body.email});
-        //     console.log(existingUser._id)
-        //     console.log(user._id);
-        //     if (!existingUser || existingUser._id == user._id) {
-        //         user.email = req.body.email
-        //         console.log(5)
-        //     } else {
-        //         console.log(6)
-        //         res.status(400);
-        //         throw new Error('An account already exists with this email');
-        //     }
-        // }
-
         if (req.body.email) user.email = req.body.email
         if (req.body.name) user.name = req.body.name
         if (req.body.password) user.password = req.body.password
@@ -108,5 +98,5 @@ const updateProfie = asyncHandler(async (req, res) => {
 
 
 
-
+// Exporting functions
 export {registerUser, loginUser, userData, updateProfie};

@@ -16,5 +16,7 @@ const connectDB = async () => {
     }
 }
 
+
+
 // Export so it can be called in index.js when needed to conenct to db
 export default connectDB

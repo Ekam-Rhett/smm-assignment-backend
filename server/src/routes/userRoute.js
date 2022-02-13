@@ -1,8 +1,6 @@
-// Imports neccessary packages
+// Imports neccessary packages and files
 import express from 'express';
 import passport from 'passport'
-
-// Imports necessary files
 import protect from '../middlewares/authMiddleware.js'; // This import is being used by passport.authenticate method
 import {registerUser, loginUser, userData, updateProfie} from '../controllers/userController.js'
 

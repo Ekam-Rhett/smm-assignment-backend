@@ -1,9 +1,10 @@
+// Importing packages and files
 import asyncHandler from 'express-async-handler';
 import Category from '../models/categoryModel.js';
 import Service from '../models/serviceModel.js';
 
 
-
+// Services controller function to get all categories for admins
 const adminServices = asyncHandler(async (req, res) => {
     let allServices;
     const showDisabled = (req.params.showDisabled === "true") ? true : false;
@@ -26,7 +27,7 @@ const adminServices = asyncHandler(async (req, res) => {
 });
 
 
-
+// Services controller function to get all categories for users
 const publicServices = asyncHandler(async (req, res) => {
     const categories = await Category.find();
     const services = await Service.find();
@@ -47,11 +48,10 @@ const publicServices = asyncHandler(async (req, res) => {
     })
 
     return res.status(200).json({services: sendServices});
-
 })
 
 
-
+// Services controller function for creating services
 const createService = asyncHandler(async (req, res) => {
     const {categoryId, supplierServiceId, name, serviceType, retailPrice, quantity, quality, denyLinkDuplicates} = req.body;
     const category = await Category.findById(categoryId);
@@ -83,6 +83,7 @@ const createService = asyncHandler(async (req, res) => {
 });
 
 
+// Services controller function for deleting services
 const deleteService = asyncHandler(async (req, res) => {
     const { serviceId } = req.body;
 
@@ -104,6 +105,7 @@ const deleteService = asyncHandler(async (req, res) => {
 });
 
 
+// Services controller function for updating services
 const updateService = asyncHandler(async (req, res) => {
     const {serviceId, categoryId, supplierServiceId, name, serviceType, retailPrice, quantity, quality, denyLinkDuplicates, isActive} = req.body;
     const service = await Service.findById(serviceId);
@@ -147,9 +149,9 @@ const updateService = asyncHandler(async (req, res) => {
         updatedService,
         message: "Service updated"
     });
-    
 });
 
 
 
+// Exporting functions
 export  {publicServices, adminServices, createService, updateService,  deleteService};

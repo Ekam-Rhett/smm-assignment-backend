@@ -1,12 +1,9 @@
+// Importing packages and files
 import asyncHandler from 'express-async-handler'
 import Payment from '../models/paymentModel.js'
 
 
-
-
-
-
-
+// Payment function to get all the payment data stored in db
 export const getPayments = asyncHandler(async (req, res) => {
     const paymentData = await Payment.find().select("-transcationDetails");
     if (!paymentData) {
