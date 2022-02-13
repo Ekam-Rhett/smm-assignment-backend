@@ -46,7 +46,7 @@ const publicServices = asyncHandler(async (req, res) => {
        sendServices.push(data) 
     })
 
-    return res.status(200).send(sendServices);
+    return res.status(200).json({services: sendServices});
 
 })
 
