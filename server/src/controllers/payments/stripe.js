@@ -40,7 +40,7 @@ export const createStripePayment = asyncHandler(async (req, res) => {
                 customerEmail
             },
             customer_email: customerEmail,
-            success_url: `${process.env.CLIENT_URL}/api/payment/stripe/success/{CHECKOUT_SESSION_ID}`,
+            success_url: `${process.env.CLIENT_URL}/stripe/success/{CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.CLIENT_URL}/cancel`
         });
 
