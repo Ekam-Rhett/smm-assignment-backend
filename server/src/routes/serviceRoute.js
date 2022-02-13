@@ -9,9 +9,10 @@ router.route('/admin/create').post(passport.authenticate('jwt', {session: false}
 router.route('/admin/delete').post(passport.authenticate('jwt', {session: false}), deleteService);
 router.route('/admin/update').post(passport.authenticate('jwt', {session: false}), updateService);
 router.route('/admin/:showDisabled?').get(passport.authenticate('jwt', {session: false}), adminServices);
-
 router.route('/public').get(publicServices);
 
 
+
+// Exports router so it can be mentioned in index.js
 export default router;
 

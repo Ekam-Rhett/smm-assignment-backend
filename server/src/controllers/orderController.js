@@ -4,7 +4,6 @@ import Order from '../models/orderModel.js'
 export const createOrder = asyncHandler(async (orderData) => {
     const amountOfOrders = await Order.countDocuments()
 
-
     const newOrder = await Order.create({
         orderId: amountOfOrders + 1,
         apiOrderId: orderData.apiOrderId,
@@ -22,7 +21,6 @@ export const createOrder = asyncHandler(async (orderData) => {
     return {
         newOrder
     }
-
 });
 
 
