@@ -1,5 +1,8 @@
+// Import mongoose to make a schema for mongodb
 import mongoose from 'mongoose';
 
+
+// Schema for payment logs
 const paymentSchema = mongoose.Schema({
     paymentMethod: {
         type: String,
@@ -35,6 +38,9 @@ const paymentSchema = mongoose.Schema({
 });
 
 
+// Defining Model with mongoose with the schema we created
 const Payment =  mongoose.model('Payment', paymentSchema);
 
+
+// Exporting Payment
 export default Payment;

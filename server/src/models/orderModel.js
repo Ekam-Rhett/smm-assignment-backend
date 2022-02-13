@@ -1,5 +1,8 @@
+// Import mongoose to make a schema for mongodb
 import mongoose from 'mongoose'
 
+
+// Schema for orders
 const orderSchema = mongoose.Schema({
     orderId: {
         type: Number,
@@ -45,8 +48,10 @@ const orderSchema = mongoose.Schema({
 });
 
 
-
-
+// Defining Model with mongoose with the schema we created
 const Order = mongoose.model("Orders", orderSchema);
 
+
+
+// Exporting Order
 export default Order;

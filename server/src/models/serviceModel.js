@@ -1,6 +1,8 @@
+// Import mongoose to make a schema for mongodb
 import mongoose from 'mongoose'
 
 
+// Schema for services
 const serviceSchema = mongoose.Schema({
     categoryId: {
         type: Object,
@@ -45,6 +47,11 @@ const serviceSchema = mongoose.Schema({
     timestamps: true
 })
 
+
+// Defining Model with mongoose with the schema we created
 const Service = mongoose.model("Services", serviceSchema);
 
+
+
+// Exporting Service
 export default Service
