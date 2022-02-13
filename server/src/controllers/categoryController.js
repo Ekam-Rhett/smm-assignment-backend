@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler';
 import Category from '../models/categoryModel.js';
-import Service from '../models/serviceModel.js';
 
 
 const getCategories = asyncHandler(async (req, res) => {
