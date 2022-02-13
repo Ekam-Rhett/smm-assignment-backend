@@ -33,10 +33,6 @@ app.use(cors({
     origin: '*'
 }));
 
-// Custom middleware for error handling and throwing errors
-app.use(notFound);
-app.use(errorHandler);
-
 
 // A json get response on / to know the server is running
 app.get('/', (req, res) => {
@@ -52,6 +48,10 @@ app.use('/api/service', serviceRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/calculate', paymentRoutes);
 app.use('/api/order', orderRoutes);
+
+// Custom middleware for error handling and throwing errors
+app.use(notFound);
+app.use(errorHandler);
 
 
 
